@@ -40,14 +40,19 @@ jobs:
         include:
           # macOS packs a .app and a .dmg. Universal is both architectures
           # in one app, so one runner covers Intel and Apple silicon.
+          # artifact is the artifact's name, which may hold no slash.
           - os: macos-latest
             platform: darwin/universal
+            artifact: macos
           - os: ubuntu-latest
             platform: linux/amd64
+            artifact: linux-amd64
           - os: ubuntu-latest
             platform: linux/arm64
+            artifact: linux-arm64
           - os: windows-latest
             platform: windows/amd64
+            artifact: windows-amd64
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -70,12 +75,23 @@ jobs:
       - name: Build
         run: go tool mygo build -platform ${{ matrix.platform }}
 
+      # A .app is a directory: zipping it keeps its bundle intact on the way
+      # through an artifact and on a release, and that is what people unpack.
+      - name: Zip the macOS app
+        if: runner.os == 'macOS'
+        run: |
+          cd build
+          for app in */*.app; do
+            [ -e "$app" ] || continue
+            ditto -c -k --sequesterRsrc --keepParent "$app" "${app%.app}.zip"
+          done
+
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform == 'darwin/universal' && 'macos' || matrix.platform }}
+          name: ${{ matrix.artifact }}
           path: |
             build/**/*.dmg
-            build/**/*.app
+            build/**/*.zip
             build/**/*.exe
             build/**/*.tar.gz
             build/**/*.deb
@@ -97,5 +113,13 @@ jobs:
         run: find dist -type f | sort
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/**/*
+          # Only files: a directory here is an error for the action.
+          files: |
+            dist/**/*.dmg
+            dist/**/*.zip
+            dist/**/*.exe
+            dist/**/*.tar.gz
+            dist/**/*.deb
+            dist/**/checksums.txt
+          fail_on_unmatched_files: false
           generate_release_notes: true
