@@ -1,0 +1,12 @@
+# 忽略构建缓存与临时目录
+
+# mygo build 的产物
+/build/
+# mygo dev 的工作目录
+/.mygo/
+# 只写当前目录的环境用 make LOCAL=1 时的 Go 缓存
+/.cache/
+# 开发时用的示例数据目录
+/.devdata/
+mygo_windows_*.syso
+.DS_Store

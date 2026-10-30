@@ -1,0 +1,99 @@
+name: build
+
+# A push and a pull request check the code; a tag also packs it for every
+# platform and puts the files on a release.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GOFLAGS: -mod=mod
+
+jobs:
+  test:
+    name: vet and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          check-latest: true
+          cache: true
+      - run: go vet ./...
+      - run: go test ./...
+
+  build:
+    name: pack ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # macOS packs a .app and a .dmg. Universal is both architectures
+          # in one app, so one runner covers Intel and Apple silicon.
+          - os: macos-latest
+            platform: darwin/universal
+          - os: ubuntu-latest
+            platform: linux/amd64
+          - os: ubuntu-latest
+            platform: linux/arm64
+          - os: windows-latest
+            platform: windows/amd64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          check-latest: true
+          cache: true
+
+      # The Windows installer is made with NSIS; mygo downloads it when it is
+      # missing, and this makes sure it is there.
+      - name: Install NSIS
+        if: runner.os == 'Windows'
+        run: choco install nsis -y --no-progress
+
+      # Debian packages need these on Linux.
+      - name: Install packaging tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y fakeroot dpkg-dev
+
+      - name: Build
+        run: go tool mygo build -platform ${{ matrix.platform }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform == 'darwin/universal' && 'macos' || matrix.platform }}
+          path: |
+            build/**/*.dmg
+            build/**/*.app
+            build/**/*.exe
+            build/**/*.tar.gz
+            build/**/*.deb
+            build/**/checksums.txt
+          if-no-files-found: error
+          compression-level: 0
+
+  release:
+    name: publish the release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: List what was built
+        run: find dist -type f | sort
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/**/*
+          generate_release_notes: true
