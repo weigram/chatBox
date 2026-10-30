@@ -17,6 +17,21 @@ window is native UI drawn by mygo. One binary, a dozen megabytes.
 The dock on the left holds every chat you have open — they are the tabs in the
 title bar too — and the page fills the rest of the window.
 
+## Download
+
+Prebuilt files are on the [releases page](https://github.com/weigram/chatBox/releases):
+
+| Platform | Files |
+| --- | --- |
+| macOS, universal (Intel and Apple silicon) | `chatBox.zip` (the `.app`), `chatbox-0.1.0.dmg` |
+| Windows, x64 | `chatbox-setup-0.1.0-amd64.exe` (installer), `chatBox.exe` (portable) |
+| Linux, x64 and arm64 | `chatbox-0.1.0-linux-<arch>.tar.gz` (with `install.sh`), `chatbox_0.1.0_<arch>.deb` |
+
+None of them is signed. On macOS, right-click the app and choose Open the first
+time, or run `xattr -dr com.apple.quarantine chatBox.app`; on Windows, SmartScreen
+hides it behind 更多信息 → 仍要运行. Linux needs WebKitGTK 4.1 and GTK 3
+(`libwebkit2gtk-4.1-0` on Debian and Ubuntu, `webkit2gtk4.1` on Fedora).
+
 ## Features
 
 - **Built-in chats**: ChatGPT, Claude, Gemini, DeepSeek, Doubao, Kimi, Qwen,

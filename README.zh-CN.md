@@ -15,6 +15,21 @@
 
 左侧 Dock 栏放着打开的每一个聊天——它们同时也是标题栏里的标签——剩下的整块就是网页。
 
+## 下载
+
+编译好的包在 [Releases](https://github.com/weigram/chatBox/releases) 里：
+
+| 平台 | 文件 |
+| --- | --- |
+| macOS，通用包（Intel 与 Apple 芯片都行） | `chatBox.zip`（里面是 `.app`）、`chatbox-0.1.0.dmg` |
+| Windows，64 位 | `chatbox-setup-0.1.0-amd64.exe`（安装版）、`chatBox.exe`（免安装） |
+| Linux，64 位与 arm64 | `chatbox-0.1.0-linux-<arch>.tar.gz`（带 `install.sh`）、`chatbox_0.1.0_<arch>.deb` |
+
+这些包都没有签名。macOS 上第一次打开要右键 →「打开」，或者执行
+`xattr -dr com.apple.quarantine chatBox.app`；Windows 上在 SmartScreen 里点
+「更多信息」→「仍要运行」。Linux 需要 WebKitGTK 4.1 与 GTK 3（Debian / Ubuntu 是
+`libwebkit2gtk-4.1-0`，Fedora 是 `webkit2gtk4.1`）。
+
 ## 功能
 
 - **内置聊天**：ChatGPT、Claude、Gemini、DeepSeek、豆包、Kimi、通义千问、
