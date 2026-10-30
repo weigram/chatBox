@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -206,12 +207,17 @@ func TestAcceleratorOf(t *testing.T) {
 
 // TestDisplayAccel checks the accelerator as the settings show it.
 func TestDisplayAccel(t *testing.T) {
+	// CmdOrCtrl is the ⌘ of macOS and the ⌃ of the others, as it is in mygo.
+	cmd := "⌘"
+	if runtime.GOOS != "darwin" {
+		cmd = "⌃"
+	}
 	for spec, want := range map[string]string{
 		"":                  "未设置",
 		"Super+Shift+M":     "⌘⇧M",
 		"Ctrl+Alt+Space":    "⌃⌥空格",
 		"Super+Shift+Slash": "⌘⇧Slash",
-		"CmdOrCtrl+Shift+M": "⌘⇧M",
+		"CmdOrCtrl+Shift+M": cmd + "⇧M",
 	} {
 		if got := displayAccel(spec); got != want {
 			t.Errorf("%q shows as %q, want %q", spec, got, want)
