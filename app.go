@@ -488,14 +488,16 @@ func (a *app) titleBar(c *ui.Context) {
 	if height < 30 {
 		height = 30
 	}
-	// 整条底是浅灰（与 Dock 同色），选中的标签是它上面的一块白，像
-	// Cherry Studio 那样：白块从灰底上浮起来，而不是反过来。
-	row := ui.Row(c).Height(height).
-		Padding(0, 6, 0, bar.Left+6).
-		Gap(6).AlignItems(ui.Center).
-		Background(t.Surface)
-	row.DragWindow()
-	row.Children(func() {
+	// 窗口自己的按钮占哪一侧，置顶就放另一侧：macOS 的交通灯在左，
+	// Windows 的最小化 / 最大化 / 关闭在右。两侧都留出它们占的宽度。
+	pin := func() {
+		circleIconButton(c, "窗口固定在最前（置顶）", pinIcon, a.store.AlwaysOnTop,
+			22, 12, func() {
+				a.store.AlwaysOnTop = !a.store.AlwaysOnTop
+				a.applyAlwaysOnTop()
+			})
+	}
+	tabs := func() {
 		ui.ScrollHorizontal(c).Grow(1).Children(func() {
 			ui.Row(c).Gap(3).AlignItems(ui.Center).Children(func() {
 				a.nextRects = a.nextRects[:0]
@@ -517,14 +519,30 @@ func (a *app) titleBar(c *ui.Context) {
 				})
 			})
 		})
-		// 窗口置顶：顶行最右、窗口右上角那一个圆按钮；开着的时候是深灰
-		// 圆底加白色图钉。
-		circleIconButton(c, "窗口固定在最前（置顶）", pinIcon, a.store.AlwaysOnTop,
-			22, 12, func() {
-				a.store.AlwaysOnTop = !a.store.AlwaysOnTop
-				a.applyAlwaysOnTop()
-			})
+	}
+	// 整条底是浅灰（与 Dock 同色），选中的标签是它上面的一块白，像
+	// Cherry Studio 那样：白块从灰底上浮起来，而不是反过来。
+	row := ui.Row(c).Height(height).
+		Padding(0, bar.Right+6, 0, bar.Left+6).
+		Gap(6).AlignItems(ui.Center).
+		Background(t.Surface)
+	row.DragWindow()
+	row.Children(func() {
+		if pinLeads(bar) {
+			pin()
+		}
+		tabs()
+		if !pinLeads(bar) {
+			pin()
+		}
 	})
+}
+
+// pinLeads reports whether the always-on-top button belongs at the start of
+// the title bar: the window's own buttons take the right side on Windows, and
+// the left side on macOS, and the pin goes where they are not.
+func pinLeads(bar ui.TitleBar) bool {
+	return bar.Right > bar.Left
 }
 
 // tabItem builds one tab: the chat's icon and name, which a click shows,

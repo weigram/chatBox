@@ -626,6 +626,25 @@ func TestTabDragReorders(t *testing.T) {
 	}
 }
 
+// TestPinLeadsWithTheWindowButtons checks which side the pin takes: the one
+// the window's own buttons leave free. macOS keeps the traffic lights on the
+// left, Windows the minimise, maximise and close on the right.
+func TestPinLeadsWithTheWindowButtons(t *testing.T) {
+	for _, c := range []struct {
+		name string
+		bar  ui.TitleBar
+		want bool
+	}{
+		{"macOS", ui.TitleBar{Height: 28, Left: 61}, false},
+		{"Windows", ui.TitleBar{Height: 32, Right: 138}, true},
+		{"no buttons", ui.TitleBar{}, false},
+	} {
+		if got := pinLeads(c.bar); got != c.want {
+			t.Errorf("%s: pinLeads=%v, want %v", c.name, got, c.want)
+		}
+	}
+}
+
 // TestBuiltinConflict checks the shortcuts of the window the app warns
 // about before the system does.
 func TestBuiltinConflict(t *testing.T) {

@@ -92,9 +92,10 @@ hides it behind 更多信息 → 仍要运行. Linux needs WebKitGTK 4.1 and GTK
   chat is a tab with its icon, name and ×; the ＋ at the end opens another.
 - **A global shortcut**: press `⌘⇧M` in any application (after turning 启用 on
   in 设置) to show or hide the window. The keys are set in 设置.
-- **Always on top**: the pin at the **far right of the tab strip** (the window's
-  top-right corner). Lit means it is on; it takes effect at once and is
-  remembered.
+- **Always on top**: the pin at the end of the tab strip. Lit means it is on;
+  it takes effect at once and is remembered. It sits on the side the window's
+  own buttons leave free: the right on macOS, the left on Windows, where
+  minimise, maximise and close take the right.
 - **Also**: back and forward, a custom User-Agent, page zoom, an isolated
   session (this chat's cookies and cache apart from the others'), injection
   into iframes, and a remembered window position.
@@ -254,9 +255,10 @@ lookup, spelling and services):
 - **In the background**: closing the window does not end the process (the
   shortcut would go with it) and does not reload the pages — what you were
   typing and where you had scrolled are still there when it comes back.
-- **Always on top**: the pin at the far right of the tab strip (the window's
-  top-right corner) turns into a small white circle (22px, a size smaller than
-  the toolbar's buttons). It is remembered, so the next launch starts on top.
+- **Always on top**: the pin at the end of the tab strip turns into a small
+  white circle (22px, a size smaller than the toolbar's buttons). It sits on
+  the side the window's own buttons leave free — the right on macOS, the left
+  on Windows. It is remembered, so the next launch starts on top.
 
 ## Injected CSS and JS
 
