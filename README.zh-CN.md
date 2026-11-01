@@ -250,6 +250,19 @@ make build     # build/darwin-arm64/chatBox.app
 make dmg       # 顺带生成磁盘映像
 ```
 
+三个平台都能在任意一台上打——mygo 不需要 cgo，网页用的是系统自带的 WebView，
+运行时才加载：
+
+| 目标 | 命令 | 产物 |
+| --- | --- | --- |
+| macOS | `go tool mygo build -platform darwin/universal` | `.app`、`.dmg` |
+| Windows | `go tool mygo build -platform windows/amd64` | `chatBox.exe`（免安装），装了 NSIS 还会多出 `-setup-.exe` 安装包 |
+| Linux | `go tool mygo build -platform linux/amd64` | 带 `install.sh` 的 `.tar.gz`、`.deb` |
+
+Windows 的**安装包**需要 `makensis`（`brew install nsis` / `choco install nsis` /
+`apt install nsis`）；没有它只会打免安装的 `.exe`，安装包跳过。`.dmg` 只能在 macOS 上做
+（要 `hdiutil`）。
+
 产物名字、bundle id、版本在 `mygo.json` 里改；图标是 `resources/icon.png`
 （`make icon` 会用 `tools/mkicon` 重新画一张）。
 

@@ -305,6 +305,19 @@ make build     # build/darwin-arm64/chatBox.app
 make dmg       # and a disk image
 ```
 
+Every platform can be built from any platform — mygo needs no cgo, and the
+web views are the system's, loaded when the app runs:
+
+| Target | Command | Files |
+| --- | --- | --- |
+| macOS | `go tool mygo build -platform darwin/universal` | `.app`, `.dmg` |
+| Windows | `go tool mygo build -platform windows/amd64` | `chatBox.exe` (portable), and a `-setup-.exe` installer with NSIS |
+| Linux | `go tool mygo build -platform linux/amd64` | `.tar.gz` with `install.sh`, `.deb` |
+
+The Windows **installer** needs `makensis` (`brew install nsis`, `choco install
+nsis`, `apt install nsis`); without it the portable `.exe` is built and the
+installer skipped. Making the `.dmg` needs macOS.
+
 The name, bundle id and version are in `mygo.json`; the icon is
 `resources/icon.png` (`make icon` redraws it with `tools/mkicon`).
 
