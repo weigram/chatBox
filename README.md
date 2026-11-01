@@ -306,7 +306,10 @@ make dmg       # and a disk image
 ```
 
 Every platform can be built from any platform — mygo needs no cgo, and the
-web views are the system's, loaded when the app runs:
+web views are the system's, loaded when the app runs. What mygo has a backend
+for is **macOS (amd64, arm64), Windows (amd64, arm64) and Linux (amd64, arm64)**;
+anything else compiles into a file that only says `… is not supported yet` when
+it starts, 32-bit Windows included.
 
 | Target | Command | Files |
 | --- | --- | --- |

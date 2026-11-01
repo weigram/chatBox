@@ -251,7 +251,9 @@ make dmg       # 顺带生成磁盘映像
 ```
 
 三个平台都能在任意一台上打——mygo 不需要 cgo，网页用的是系统自带的 WebView，
-运行时才加载：
+运行时才加载。mygo 有后端的是 **macOS（amd64、arm64）、Windows（amd64、arm64）、
+Linux（amd64、arm64）**；其它架构能编出文件，但启动时只会报 `… is not supported yet`，
+**32 位的 Windows 就是这样**。
 
 | 目标 | 命令 | 产物 |
 | --- | --- | --- |
