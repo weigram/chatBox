@@ -23,9 +23,9 @@ Prebuilt files are on the [releases page](https://github.com/weigram/chatBox/rel
 
 | Platform | Files |
 | --- | --- |
-| macOS, universal (Intel and Apple silicon) | `chatBox.zip` (the `.app`), `chatbox-0.1.0.dmg` |
-| Windows, x64 | `chatbox-setup-0.1.0-amd64.exe` (installer), `chatBox.exe` (portable) |
-| Linux, x64 and arm64 | `chatbox-0.1.0-linux-<arch>.tar.gz` (with `install.sh`), `chatbox_0.1.0_<arch>.deb` |
+| macOS, universal (Intel and Apple silicon) | `chatBox.zip` (the `.app`), `chatbox-<version>.dmg` |
+| Windows, x64 | `chatbox-setup-<version>-amd64.exe` (installer), `chatBox.exe` (portable) |
+| Linux, x64 and arm64 | `chatbox-<version>-linux-<arch>.tar.gz` (with `install.sh`), `chatbox_<version>_<arch>.deb` |
 
 None of them is signed. On macOS, right-click the app and choose Open the first
 time, or run `xattr -dr com.apple.quarantine chatBox.app`; on Windows, SmartScreen

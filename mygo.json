@@ -1,7 +1,7 @@
 {
   "name": "chatBox",
   "identifier": "app.mychatbox.desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "copyright": "Copyright © 2026 chatBox",
   "out": "build"
 }

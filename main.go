@@ -11,7 +11,7 @@ import (
 )
 
 // version is the app's version, shown by mygo build.
-const version = "0.1.0"
+const version = "0.1.1"
 
 func main() {
 	// CHATBOX_DEBUG_LOG=<path> keeps the app's log in a file of its own,

@@ -21,9 +21,9 @@
 
 | 平台 | 文件 |
 | --- | --- |
-| macOS，通用包（Intel 与 Apple 芯片都行） | `chatBox.zip`（里面是 `.app`）、`chatbox-0.1.0.dmg` |
-| Windows，64 位 | `chatbox-setup-0.1.0-amd64.exe`（安装版）、`chatBox.exe`（免安装） |
-| Linux，64 位与 arm64 | `chatbox-0.1.0-linux-<arch>.tar.gz`（带 `install.sh`）、`chatbox_0.1.0_<arch>.deb` |
+| macOS，通用包（Intel 与 Apple 芯片都行） | `chatBox.zip`（里面是 `.app`）、`chatbox-<version>.dmg` |
+| Windows，64 位 | `chatbox-setup-<version>-amd64.exe`（安装版）、`chatBox.exe`（免安装） |
+| Linux，64 位与 arm64 | `chatbox-<version>-linux-<arch>.tar.gz`（带 `install.sh`）、`chatbox_<version>_<arch>.deb` |
 
 这些包都没有签名。macOS 上第一次打开要右键 →「打开」，或者执行
 `xattr -dr com.apple.quarantine chatBox.app`；Windows 上在 SmartScreen 里点
